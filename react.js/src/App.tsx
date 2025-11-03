@@ -6,11 +6,10 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 
 // Pages
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
-import SearchResult from "./pages/SearchResult";
 import UnknownPage from "./pages/UnknownPage";
 
 function App() {
@@ -24,7 +23,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/search/:search" element={<SearchResult />} />
           <Route path="*" element={<UnknownPage />} />
         </Routes>
       </main>
