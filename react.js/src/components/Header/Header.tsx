@@ -10,8 +10,8 @@ export default function Header() {
             <Link to="/">Logo</Link>
 
             <div className={style.cta}>
-                <Button type="link" href="/login">Login</Button>
-                <Button type="link" href="/register">Register</Button>
+                <Button type="link" variant="link" href="/login">Login</Button>
+                <Button type="link" variant="button" href="/register" size="s">Register</Button>
             </div>
         </header>
     )
