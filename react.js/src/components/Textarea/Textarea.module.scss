@@ -1,0 +1,32 @@
+@use "../../assets/variables" as variables;
+$color: variables.$color;
+
+.textareaContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+
+    label {
+        font-size: 0.9rem;
+    }
+
+    .textarea {
+        resize: vertical;
+        padding: 8px;
+        border: 2px solid map-get($color, primary);
+        border-radius: 10px;
+        min-height: 100px;
+    
+        &:focus {
+            border: 2px solid map-get($color, black);
+            outline: none;
+            box-shadow: 0 0 0 2px map-get($color, transparentBlack);
+        }
+    
+        &:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+    }
+}
