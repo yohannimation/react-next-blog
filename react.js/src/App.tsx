@@ -18,14 +18,16 @@ function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/search/:search" element={<SearchResult />} />
-        <Route path="*" element={<UnknownPage />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/search/:search" element={<SearchResult />} />
+          <Route path="*" element={<UnknownPage />} />
+        </Routes>
+      </main>
       <Footer />
     </>
   )

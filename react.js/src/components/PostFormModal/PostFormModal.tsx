@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { PostFormModalInterface } from "./PostFormModal.interface";
+import Button from "../Button/Button";
 
 export default function PostFormModal({ post, onClose }: PostFormModalInterface) {
     const [input, setInput] = useState(post?.title ?? "");
@@ -8,7 +9,7 @@ export default function PostFormModal({ post, onClose }: PostFormModalInterface)
 
     return (
         <div>
-            <button type="button" onClick={onClose}>X</button>
+            <Button type="button" variant="button" action={onClose}>X</Button>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
