@@ -1,3 +1,9 @@
+:root {
+  --black: #2D2A32;
+  --primary: #DDD92A;
+  --white: #f2f3bd;
+}
+
 * {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
@@ -5,7 +11,12 @@
   font-style: normal;
   margin: 0;
   padding: 0;
+  color: var(--black);
   box-sizing: inherit;
+}
+
+body {
+  background-color: var(--white);
 }
 
 h1, h2, h3, h4, h5, h6 {
