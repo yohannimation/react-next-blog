@@ -14,10 +14,10 @@ export default function Home() {
     const [search, setSearch] = useState(searchParams.get("searchValue") || "")
 
     const posts = useMemo<PostInterface[]>(() => [
-        { id: 1, title: "titre 1", content: "content1", author: 1 },
-        { id: 2, title: "titre 2", content: "content2", author: 1 },
-        { id: 3, title: "titre 3", content: "content3", author: 2 },
-        { id: 4, title: "titre 3", content: "content3", author: 2 },
+        { id: 1, title: "titre 1", content: "content1", private: true, author: 1 },
+        { id: 2, title: "titre 2", content: "content2", private: false, author: 1 },
+        { id: 3, title: "titre 3", content: "content3", private: true, author: 2 },
+        { id: 4, title: "titre 3", content: "content3", private: false, author: 2 },
     ], []);
 
     const handleSearch = () => {
