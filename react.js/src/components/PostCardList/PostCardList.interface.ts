@@ -1,5 +1,5 @@
-import type { PostCardInterface } from "../PostCard/PostCard.interface"
+import type { PostInterface } from "../../interface/post.interface";
 
 export interface PostCardListInterface {
-    cardList: PostCardInterface[]
+    posts: PostInterface[]
 }

@@ -1,5 +1,6 @@
+import type { PostInterface } from "../../interface/post.interface"
+
 export interface PostFormModalInterface {
-    title?: string
-    content?: string
+    post?: PostInterface
     onClose: () => void
 }

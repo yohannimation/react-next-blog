@@ -2,11 +2,11 @@ import type { PostCardListInterface } from "./PostCardList.interface";
 
 import PostCard from "../PostCard/PostCard";
 
-export default function PostCardList({ cardList }: PostCardListInterface) {
+export default function PostCardList({ posts }: PostCardListInterface) {
     return (
         <ul>
-            {cardList.map((card, index) => {
-                return <PostCard key={index} title={card.title} content={card.content} />
+            {posts.map((post) => {
+                return <PostCard key={post.id} post={post} />
             })}
         </ul>
     )

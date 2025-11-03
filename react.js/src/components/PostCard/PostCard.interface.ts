@@ -1,4 +1,5 @@
+import type { PostInterface } from "../../interface/post.interface"
+
 export interface PostCardInterface {
-    title: string
-    content: string
+    post: PostInterface
 }

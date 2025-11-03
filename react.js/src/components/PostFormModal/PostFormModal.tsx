@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import type { PostFormModalInterface } from "./PostFormModal.interface";
 
-export default function PostFormModal({ title, content, onClose }: PostFormModalInterface) {
-    const [input, setInput] = useState(title ?? "");
-    const [textarea, setTextarea] = useState(content ?? "");
+export default function PostFormModal({ post, onClose }: PostFormModalInterface) {
+    const [input, setInput] = useState(post?.title ?? "");
+    const [textarea, setTextarea] = useState(post?.content ?? "");
 
     return (
         <div>

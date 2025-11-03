@@ -2,14 +2,16 @@ import { useMemo } from "react";
 
 import PostCardList from "../components/PostCardList/PostCardList";
 
+import type { PostInterface } from "../interface/post.interface";
+
 export default function Home() {
-    const cardList = useMemo(() => [
-        { title: "titre 1", content: "content1" },
-        { title: "titre 2", content: "content2" },
-        { title: "titre 3", content: "content3" },
+    const posts = useMemo<PostInterface[]>(() => [
+        { id: 1, title: "titre 1", content: "content1", author: 1 },
+        { id: 2, title: "titre 2", content: "content2", author: 1 },
+        { id: 3, title: "titre 3", content: "content3", author: 2 },
     ], []);
 
     return (
-        <PostCardList cardList={cardList} />
+        <PostCardList posts={posts} />
     )
 }
