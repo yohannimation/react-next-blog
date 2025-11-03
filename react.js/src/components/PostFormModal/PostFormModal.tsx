@@ -1,13 +1,14 @@
 import { useState } from "react";
 
-import type { PostFormInterface } from "./PostForm.interface";
+import type { PostFormModalInterface } from "./PostFormModal.interface";
 
-export default function PostForm({ title, content }: PostFormInterface) {
+export default function PostFormModal({ title, content, onClose }: PostFormModalInterface) {
     const [input, setInput] = useState(title ?? "");
     const [textarea, setTextarea] = useState(content ?? "");
 
     return (
         <div>
+            <button type="button" onClick={onClose}>X</button>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
