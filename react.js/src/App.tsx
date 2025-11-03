@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import './App.css'
 
 import PostCardList from './components/PostCardList/PostCardList'
+import PostForm from './components/PostForm/PostForm';
 
 function App() {
   const cardList = useMemo(() => [
@@ -14,6 +15,7 @@ function App() {
   return (
     <>
       <PostCardList cardList={cardList} />
+      <PostForm title='title test' content='content test' />
     </>
   )
 }
