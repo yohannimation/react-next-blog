@@ -9,12 +9,12 @@ export default function Button(props: ButtonInterface) {
     
     switch (type) {
         case 'button':
-            return <button type="button" className={style[variant]} onClick={props.action}>
+            return <button type="button" className={`${style.root} ${style[variant]} ${style[props.size]}`} onClick={props.action}>
                 {children}
             </button>
 
         case 'link':
-            return <Link to={props.href} className={style[variant]}>{children}</Link>
+            return <Link to={props.href} className={`${style.root} ${style[variant]} ${style[props.size]}`}>{children}</Link>
         
         default:
             return <p>type error</p>
