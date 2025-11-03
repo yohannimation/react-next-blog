@@ -21,6 +21,7 @@ $color: variables.$color;
         justify-content: center;
         align-items: start;
         flex-direction: column;
+        gap: 10px;
         padding: 20px;
         width: 75%;
         background-color: map-get($color, white);
