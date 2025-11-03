@@ -5,7 +5,4 @@ $color: variables.$color;
     padding: 20px;
     border-radius: 20px;
     background-color: map-get($color, primary);
-    min-width: 225px;
-    flex-grow: 1;
-    flex-basis: auto;
 }
