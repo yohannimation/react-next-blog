@@ -10,7 +10,7 @@ export default function Footer() {
 
     return (
         <footer className={style.footer}>
-            { isOpen && <div onClick={() => setIsOpen(false)}><PostFormModal onClose={() => setIsOpen(false)} /></div> }
+            { isOpen && <PostFormModal onClose={() => setIsOpen(false)} /> }
             <Button type="button" variant="button" action={() => setIsOpen(true)} size="l">Add a post</Button>
         </footer>
     )

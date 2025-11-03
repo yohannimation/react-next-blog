@@ -6,5 +6,5 @@ export type ButtonInterface =
 
 interface ButtonBaseInterface {
     children: ReactNode
-    variant: 'link' | 'button' | 'transparent'
+    variant: 'link' | 'button' | 'buttonBlack'
 }

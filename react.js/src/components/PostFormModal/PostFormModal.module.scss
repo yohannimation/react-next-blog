@@ -1,0 +1,39 @@
+@use "../../assets/variables" as variables;
+$color: variables.$color;
+
+.root {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .blurredBg {
+        position: absolute;
+        inset: 0;
+        background-color: map-get($color, transparentBlack);
+        backdrop-filter: blur(3px);
+    }
+
+    .modal {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+        padding: 20px;
+        width: 75%;
+        background-color: map-get($color, white);
+        border-radius: 20px;
+        box-shadow: 0 0 10px map-get($color, transparentBlack);
+        z-index: 1;
+
+        &Cta {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+    }
+}
