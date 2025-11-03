@@ -1,21 +1,28 @@
-import { useMemo } from 'react';
+import { Routes, Route } from "react-router-dom";
 
 import './App.css'
 
-import PostCardList from './components/PostCardList/PostCardList'
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Account from "./pages/Account";
+import SearchResult from "./pages/SearchResult";
+import UnknownPage from "./pages/UnknownPage";
 import PostForm from './components/PostForm/PostForm';
 
 function App() {
-  const cardList = useMemo(() => [
-    { title: "titre 1", content: "content1" },
-    { title: "titre 2", content: "content2" },
-    { title: "titre 3", content: "content3" },
-  ], []);
 
   return (
     <>
-      <PostCardList cardList={cardList} />
-      <PostForm title='title test' content='content test' />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/search/:search" element={<SearchResult />} />
+        <Route path="*" element={<UnknownPage />} />
+      </Routes>
+      <PostForm />
     </>
   )
 }
