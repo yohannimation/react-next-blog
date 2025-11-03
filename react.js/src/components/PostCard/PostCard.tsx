@@ -1,7 +1,7 @@
 import Button from "../Button/Button"
 import type { PostCardInterface } from "./PostCard.interface"
 
-import style from "./PostCard.module.css"
+import style from "./PostCard.module.scss"
 
 export default function PostCard({ post }: PostCardInterface) {
     return (

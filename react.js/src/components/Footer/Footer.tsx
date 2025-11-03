@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import style from "./Footer.module.css"
+import style from "./Footer.module.scss"
 
 import PostFormModal from "../PostFormModal/PostFormModal"
 import Button from "../Button/Button"

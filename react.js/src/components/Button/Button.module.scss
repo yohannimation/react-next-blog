@@ -1,0 +1,22 @@
+@use "../../assets/variables" as variables;
+$color: variables.$color;
+
+.button {
+    padding: 8px 15px;
+    background-color: map-get($color, primary);
+    color: map-get($color, black);
+    text-decoration: none;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+}
+
+.link {
+    color: map-get($color, black);
+    text-decoration: underline;
+}
+
+.transparent {
+    text-decoration: none;
+    color: map-get($color, black);
+}

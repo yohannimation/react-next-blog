@@ -2,7 +2,7 @@ import type { PostCardListInterface } from "./PostsList.interface";
 
 import PostCard from "../PostCard/PostCard";
 
-import style from "./PostsList.module.css";
+import style from "./PostsList.module.scss";
 
 export default function PostsList({ posts }: PostCardListInterface) {
     return (

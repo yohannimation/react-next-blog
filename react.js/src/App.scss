@@ -1,0 +1,17 @@
+@use "./assets/typo" as typo;
+@use "./assets/variables" as variables;
+$color: variables.$color;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  background-color: map-get($color, white);
+}
+
+main {
+  margin: 20px 50px;
+}

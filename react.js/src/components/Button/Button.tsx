@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import type { ButtonInterface } from "./Button.interface";
 
-import style from "./Button.module.css"
+import style from "./Button.module.scss"
 
 export default function Button(props: ButtonInterface) {
     const {children, type, variant} = props
