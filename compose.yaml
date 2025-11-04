@@ -12,24 +12,18 @@ services:
   #   volumes:
   #     - mysql-data:/var/lib/mysql
 
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   container_name: pwa_recipe_backend
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     DB_HOST: mysql
-  #     DB_NAME: ${MYSQL_DATABASE}
-  #     DB_USER: ${MYSQL_USER}
-  #     DB_PASSWORD: ${MYSQL_PASSWORD}
-  #     DB_URL_PRISMA: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql/${MYSQL_DATABASE}?schema=public"
-  #   depends_on:
-  #     - mysql
-  #   volumes:
-  #     - ./backend:/app
-  #     - /app/node_modules
+  next:
+    build:
+      context: ./next.js
+      dockerfile: Dockerfile
+    container_name: blog_backend
+    ports:
+      - "3000:3000"
+    # depends_on:
+    #   - mysql
+    volumes:
+      - ./next.js:/app
+      - /app/node_modules
 
   react:
     build:
