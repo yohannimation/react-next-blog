@@ -18,17 +18,29 @@ export default function Home() {
     const [posts, setPosts] = useState<PostInterface[]>([]);
 
     useEffect(() => {
-        setLoading(true)
+        const fetchPosts = async () => {
+            setLoading(true);
         
-        setPosts([
-            { id: 1, title: "titre 1", content: "content1", private: true, author: 1 },
-            { id: 2, title: "titre 2", content: "content2", private: false, author: 1 },
-            { id: 3, title: "titre 3", content: "content3", private: true, author: 2 },
-            { id: 4, title: "titre 3", content: "content3", private: false, author: 2 },
-        ])
-
-        setLoading(false)
-    }, [searchParams])
+            try {
+                const searchValue = searchParams.get("searchValue");
+                const url = searchValue
+                ? `http://localhost:3000/api/posts?search=${encodeURIComponent(searchValue)}`
+                : "http://localhost:3000/api/posts";
+        
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Erreur lors du chargement des posts");
+        
+                const data = await res.json();
+                setPosts(data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchPosts();
+    }, [searchParams]);
 
     const handleSearch = () => {
         setSearchParams({ searchValue: search });
