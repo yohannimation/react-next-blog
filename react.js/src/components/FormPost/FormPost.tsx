@@ -9,10 +9,13 @@ import Input from "../Input/Input";
 import Textarea from "../Textarea/Textarea";
 import Loader from "../Loader/Loader";
 
+import { useUser } from "../../context/UserContext";
+
 export default function FormPost({ post, onClose }: PostFormModalInterface) {
     const [input, setInput] = useState(post?.title ?? "");
     const [textarea, setTextarea] = useState(post?.content ?? "");
     const [loading, setLoading] = useState(false);
+    const { user } = useUser();
 
     const resetForm = () => {
         setInput("")
@@ -28,17 +31,20 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
         setLoading(true);
 
         try {
+            if (!user) throw new Error("User error");
+
             const newPost = {
                 title: input,
                 content: textarea,
                 private: false,
-                author: 1, // 🔧 à remplacer par l'ID du user connecté plus tard
+                author: user.id,
             };
 
             const res = await fetch("http://localhost:3000/api/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}`,
                 },
                 body: JSON.stringify(newPost),
             });
@@ -60,30 +66,33 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
 
             <div className={style.modal}>
                 {
-                    loading ?
-                        <Loader />
+                    user ?
+                        loading ?
+                            <Loader />
+                        :
+                            <>
+                                <Input
+                                    id="title"
+                                    label="Title"
+                                    type="text"
+                                    placeholder="Title name"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                />
+                                <Textarea
+                                    id="content"
+                                    label="Content"
+                                    placeholder="Content"
+                                    value={textarea}
+                                    onChange={(e) => setTextarea(e.target.value)}
+                                />
+                                <div className={style.modalCta}>
+                                    <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
+                                    <Button type="button" variant="button" action={save} size="m">Save</Button>
+                                </div>
+                            </>
                     :
-                    <>
-                        <Input
-                            id="title"
-                            label="Title"
-                            type="text"
-                            placeholder="Title name"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                        />
-                        <Textarea
-                            id="content"
-                            label="Content"
-                            placeholder="Content"
-                            value={textarea}
-                            onChange={(e) => setTextarea(e.target.value)}
-                        />
-                        <div className={style.modalCta}>
-                            <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
-                            <Button type="button" variant="button" action={save} size="m">Save</Button>
-                        </div>
-                    </>
+                    <p>Please login</p>
                 }
             </div>
         </div>
