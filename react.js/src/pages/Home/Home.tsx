@@ -1,6 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import { useUser } from "../../context/UserContext";
+
 import PostsList from "../../components/PostsList/PostsList";
 import Input from "../../components/Input/Input";
 
@@ -11,11 +13,15 @@ import Button from "../../components/Button/Button";
 import Loader from "../../components/Loader/Loader";
 
 export default function Home() {
+    const { user, logout } = useUser();
+
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [search, setSearch] = useState(searchParams.get("search") || "")
     const [loading, setLoading] = useState<boolean>(false)
     const [posts, setPosts] = useState<PostInterface[]>([]);
+
+    console.log("context",  user)
 
     useEffect(() => {
         const fetchPosts = async () => {

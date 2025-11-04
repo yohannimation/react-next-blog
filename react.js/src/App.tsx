@@ -1,6 +1,6 @@
+// src/App.tsx
 import { Routes, Route } from "react-router-dom";
-
-import './App.scss'
+import { UserProvider } from "./context/UserContext";
 
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -12,10 +12,11 @@ import Register from "./pages/Register/Register";
 import Account from "./pages/Account";
 import UnknownPage from "./pages/UnknownPage";
 
-function App() {
+import "./App.scss"
 
+function App() {
   return (
-    <>
+    <UserProvider>
       <Header />
       <main>
         <Routes>
@@ -27,8 +28,8 @@ function App() {
         </Routes>
       </main>
       <Footer />
-    </>
-  )
+    </UserProvider>
+  );
 }
 
-export default App
+export default App;
