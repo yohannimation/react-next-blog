@@ -13,7 +13,7 @@ import Loader from "../../components/Loader/Loader";
 export default function Home() {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [search, setSearch] = useState(searchParams.get("searchValue") || "")
+    const [search, setSearch] = useState(searchParams.get("search") || "")
     const [loading, setLoading] = useState<boolean>(false)
     const [posts, setPosts] = useState<PostInterface[]>([]);
 
@@ -22,7 +22,7 @@ export default function Home() {
             setLoading(true);
         
             try {
-                const searchValue = searchParams.get("searchValue");
+                const searchValue = searchParams.get("search");
                 const url = searchValue
                 ? `http://localhost:3000/api/posts?search=${encodeURIComponent(searchValue)}`
                 : "http://localhost:3000/api/posts";
@@ -43,7 +43,7 @@ export default function Home() {
     }, [searchParams]);
 
     const handleSearch = () => {
-        setSearchParams({ searchValue: search });
+        setSearchParams({ search: search });
     }
 
     return (

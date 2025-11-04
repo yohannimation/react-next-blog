@@ -15,8 +15,19 @@ export async function OPTIONS() {
     return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function GET() {
-    return NextResponse.json(posts, { headers: corsHeaders });
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search");
+
+    let filteredPosts = posts;
+    if (search) {
+        const lowerSearch = search.toLowerCase();
+        filteredPosts = posts.filter((p) =>
+            p.title.toLowerCase().includes(lowerSearch)
+        );
+    }
+
+    return NextResponse.json(filteredPosts, { headers: corsHeaders });
 }
 
 export async function POST(req: Request) {
