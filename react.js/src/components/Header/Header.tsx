@@ -18,7 +18,7 @@ export default function Header() {
                     user ?
                     <>
                         <p>compte</p>
-                        <Button type="button" variant="buttonBlack" action={logout} size="s">Login</Button>
+                        <Button type="button" variant="buttonBlack" action={logout} size="s">Logout</Button>
                     </>
                     :
                     <>

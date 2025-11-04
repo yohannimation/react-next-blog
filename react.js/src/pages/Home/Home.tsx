@@ -8,35 +8,38 @@ import Input from "../../components/Input/Input";
 
 import type { PostInterface } from "../../interface/post.interface";
 
-import style from "./Home.module.scss"
+import style from "./Home.module.scss";
 import Button from "../../components/Button/Button";
 import Loader from "../../components/Loader/Loader";
 
 export default function Home() {
-    const { user, logout } = useUser();
+    const { user } = useUser();
 
     const [searchParams, setSearchParams] = useSearchParams();
-
-    const [search, setSearch] = useState(searchParams.get("search") || "")
-    const [loading, setLoading] = useState<boolean>(false)
+    const [search, setSearch] = useState(searchParams.get("search") || "");
+    const [loading, setLoading] = useState<boolean>(false);
     const [posts, setPosts] = useState<PostInterface[]>([]);
-
-    console.log("context",  user)
 
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
-        
+
             try {
                 const searchValue = searchParams.get("search");
                 const url = searchValue
-                ? `http://localhost:3000/api/posts?search=${encodeURIComponent(searchValue)}`
-                : "http://localhost:3000/api/posts";
-        
-                const res = await fetch(url);
+                    ? `http://localhost:3000/api/posts?search=${encodeURIComponent(searchValue)}`
+                    : "http://localhost:3000/api/posts";
+
+                const res = await fetch(url, {
+                    headers: user
+                        ? { Authorization: `Bearer ${user.token}` }
+                        : undefined,
+                });
+
                 if (!res.ok) throw new Error("Erreur lors du chargement des posts");
-        
-                const data = await res.json();
+
+                const data: PostInterface[] = await res.json();
+
                 setPosts(data);
             } catch (err) {
                 console.error(err);
@@ -44,13 +47,13 @@ export default function Home() {
                 setLoading(false);
             }
         };
-    
+
         fetchPosts();
-    }, [searchParams]);
+    }, [searchParams, user]);
 
     const handleSearch = () => {
-        setSearchParams({ search: search });
-    }
+        setSearchParams({ search });
+    };
 
     return (
         <>
@@ -64,16 +67,13 @@ export default function Home() {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
-                    <Button type="button" variant="button" action={handleSearch} size="m">Search</Button>
+                    <Button type="button" variant="button" action={handleSearch} size="m">
+                        Search
+                    </Button>
                 </div>
             </div>
-            {
-                loading ? (
-                    <Loader />
-                ) : (
-                    <PostsList posts={posts} />
-                )
-            }
+
+            {loading ? <Loader /> : <PostsList posts={posts} user={user} />}
         </>
-    )
+    );
 }
