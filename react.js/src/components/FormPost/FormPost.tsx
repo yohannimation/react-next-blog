@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-import type { PostFormModalInterface } from "./PostFormModal.interface";
+import type { PostFormModalInterface } from "./FormPost.interface";
+
+import style from "./FormPost.module.scss";
 
 import Button from "../Button/Button";
-
-import style from "./PostFormModal.module.scss";
 import Input from "../Input/Input";
 import Textarea from "../Textarea/Textarea";
 
-export default function PostFormModal({ post, onClose }: PostFormModalInterface) {
+export default function FormPost({ post, onClose }: PostFormModalInterface) {
     const [input, setInput] = useState(post?.title ?? "");
     const [textarea, setTextarea] = useState(post?.content ?? "");
 

@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import style from "./Footer.module.scss"
 
-import PostFormModal from "../PostFormModal/PostFormModal"
+import FormPost from "../FormPost/FormPost"
 import Button from "../Button/Button"
 
 export default function Footer() {
@@ -10,7 +10,7 @@ export default function Footer() {
 
     return (
         <footer className={style.footer}>
-            { isOpen && <PostFormModal onClose={() => setIsOpen(false)} /> }
+            { isOpen && <FormPost onClose={() => setIsOpen(false)} /> }
             <Button type="button" variant="button" action={() => setIsOpen(true)} size="l">Add a post</Button>
         </footer>
     )
