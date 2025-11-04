@@ -27,7 +27,8 @@ export async function POST(req: Request) {
     const token = jwt.sign(
         { id: user.id, username: user.username },
         JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "30m" } // 30min
+        // { expiresIn: "30s" } // 30sec
     );
 
     return NextResponse.json({ message: "Login successful", token, user: { id: user.id, username: user.username } }, { headers: corsHeaders });
