@@ -7,10 +7,12 @@ import style from "./FormPost.module.scss";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import Textarea from "../Textarea/Textarea";
+import Loader from "../Loader/Loader";
 
 export default function FormPost({ post, onClose }: PostFormModalInterface) {
     const [input, setInput] = useState(post?.title ?? "");
     const [textarea, setTextarea] = useState(post?.content ?? "");
+    const [loading, setLoading] = useState(false);
 
     const resetForm = () => {
         setInput("")
@@ -22,34 +24,67 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
         onClose();
     }
 
-    const save = () => {
-        resetForm();
-    }
+    const save = async () => {
+        setLoading(true);
+
+        try {
+            const newPost = {
+                title: input,
+                content: textarea,
+                private: false,
+                author: 1, // 🔧 à remplacer par l'ID du user connecté plus tard
+            };
+
+            const res = await fetch("http://localhost:3000/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newPost),
+            });
+
+            if (!res.ok) throw new Error("Erreur lors de l’ajout du post");
+
+            resetForm();
+            onClose();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className={style.root}>
             <span className={style.blurredBg}></span>
 
             <div className={style.modal}>
-                <Input
-                    id="title"
-                    label="Title"
-                    type="text"
-                    placeholder="Title name"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                />
-                <Textarea
-                    id="content"
-                    label="Content"
-                    placeholder="Content"
-                    value={textarea}
-                    onChange={(e) => setTextarea(e.target.value)}
-                />
-                <div className={style.modalCta}>
-                    <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
-                    <Button type="button" variant="button" action={save} size="m">Save</Button>
-                </div>
+                {
+                    loading ?
+                        <Loader />
+                    :
+                    <>
+                        <Input
+                            id="title"
+                            label="Title"
+                            type="text"
+                            placeholder="Title name"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                        />
+                        <Textarea
+                            id="content"
+                            label="Content"
+                            placeholder="Content"
+                            value={textarea}
+                            onChange={(e) => setTextarea(e.target.value)}
+                        />
+                        <div className={style.modalCta}>
+                            <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
+                            <Button type="button" variant="button" action={save} size="m">Save</Button>
+                        </div>
+                    </>
+                }
             </div>
         </div>
     )
