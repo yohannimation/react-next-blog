@@ -8,7 +8,7 @@ import Footer from "./components/Footer/Footer";
 // Pages
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Register from "./pages/Register/Register";
 import Account from "./pages/Account";
 import UnknownPage from "./pages/UnknownPage";
 
