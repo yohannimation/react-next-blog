@@ -1,16 +1,4 @@
 services:
-  # mysql:
-  #   image: mysql:8.1
-  #   container_name: pwa_recipe_mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #   ports:
-  #     - "33006:3306"
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
 
   next:
     build:
@@ -19,11 +7,11 @@ services:
     container_name: blog_backend
     ports:
       - "3000:3000"
-    # depends_on:
-    #   - mysql
     volumes:
       - ./next.js:/app
       - /app/node_modules
+    networks:
+      - blog-network
 
   react:
     build:
@@ -32,23 +20,27 @@ services:
     container_name: blog_frontend
     ports:
       - "5173:5173"
-    # depends_on:
-    #   - backend
     volumes:
       - ./react.js:/app
       - /app/node_modules
+    networks:
+      - blog-network
 
-  # phpmyadmin:
-  #   image: phpmyadmin:latest
-  #   container_name: pwa_recipe_phpmyadmin
-  #   depends_on:
-  #     - mysql
-  #   ports:
-  #     - "8080:80"
-  #   environment:
-  #     PMA_HOST: mysql
-  #     PMA_USER: ${MYSQL_USER}
-  #     PMA_PASSWORD: ${MYSQL_PASSWORD}
+  nginx:
+    build:
+      context: ./nginx
+    container_name: blog_nginx
+    depends_on:
+      - react
+      - next
+    ports:
+      - "8081:80"
+    networks:
+      - nginx-proxy-manager-stack_default
+      - blog-network
 
-# volumes:
-#   mysql-data:
+networks:
+  blog-network:
+    driver: bridge
+  nginx-proxy-manager-stack_default:
+    external: true
