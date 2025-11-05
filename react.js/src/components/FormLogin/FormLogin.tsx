@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 import style from "./FormLogin.module.scss";
 
@@ -9,64 +11,79 @@ import Loader from "../Loader/Loader";
 import { useUser } from "../../context/UserContext";
 
 export default function FormLogin() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const { login } = useUser();
+    
+    const validationSchema = Yup.object({
+        username: Yup.string()
+            .required('Username is required'),
+        password: Yup.string()
+            .required('Password is required')
+    });
 
-    const triggerLogin = async () => {
-        setLoading(true);
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+        }, 
+        validationSchema,
+        validateOnBlur: false,
+        validateOnChange: false,
+        onSubmit: async (values) => {
+            setLoading(true);
 
-        try {
-            const res = await fetch("http://localhost:3000/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
+            try {
+                const res = await fetch("http://localhost:3000/api/users/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(values),
+                });
 
-            const data = await res.json();
+                const data = await res.json();
+                
+                if (!res.ok) {
+                    throw new Error(data.error || "Login failed");
+                }
 
-            if (!res.ok) throw new Error(data.error || "Login failed");
-
-            login({
-                id: data.user.id,
-                name: data.user.username,
-                token: data.token,
-            });
-
-            setUsername("");
-            setPassword("");
-        } catch (err: any) {
-            console.error(err);
-        } finally {
-            setLoading(false);
+                login({
+                    id: data.user.id,
+                    name: data.user.username,
+                    token: data.token,
+                });
+            } catch (err: any) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
         }
-    };
+    })
 
     return (
-        <form className={style.form}>
+        <form onSubmit={formik.handleSubmit} className={style.form}>
             {
                 loading ?
-                    <Loader />
+                <Loader />
                     :
-                    <>
+                <>
                     <Input
                         id="username"
                         label="Username"
                         type="text"
                         placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
                     />
+                    {formik.errors.username && <p>{formik.errors.username}</p>}
                     <Input
                         id="password"
                         label="Password"
                         type="password"
                         placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                     />
-                    <Button type="button" variant="button" action={triggerLogin} size="s">Login</Button>
+                    {formik.errors.password && <p>{formik.errors.password}</p>}
+                    <Button type="button" variant="button" action={formik.handleSubmit} size="s">Login</Button>
                 </>
             }
         </form>
