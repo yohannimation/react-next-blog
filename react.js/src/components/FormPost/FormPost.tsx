@@ -99,14 +99,14 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                                     onChange={formik.handleChange}
                                 />
                                 {formik.errors.content && <p>{formik.errors.content}</p>}
-                                <div className={style.modalCta}>
-                                    <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
-                                    <Button type="button" variant="button" action={formik.handleSubmit} size="m">Save</Button>
-                                </div>
                             </>
                     :
-                    <p>Please login</p>
+                    <h2>To add a post, you must be connected</h2>
                 }
+                <div className={style.modalCta}>
+                    <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
+                    {user && <Button type="button" variant="button" action={formik.handleSubmit} size="m">Save</Button>}
+                </div>
             </div>
         </div>
     )
