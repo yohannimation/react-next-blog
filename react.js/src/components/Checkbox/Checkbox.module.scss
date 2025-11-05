@@ -1,0 +1,27 @@
+@use "../../assets/variables" as variables;
+$color: variables.$color;
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: map-get($color, primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.label {
+    font-size: 0.95rem;
+    color: map-get($color, black);
+    cursor: pointer;
+}
