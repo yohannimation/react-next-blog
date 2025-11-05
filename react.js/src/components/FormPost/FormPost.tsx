@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 import type { PostFormModalInterface } from "./FormPost.interface";
 
@@ -12,53 +14,62 @@ import Loader from "../Loader/Loader";
 import { useUser } from "../../context/UserContext";
 
 export default function FormPost({ post, onClose }: PostFormModalInterface) {
-    const [input, setInput] = useState(post?.title ?? "");
-    const [textarea, setTextarea] = useState(post?.content ?? "");
     const [loading, setLoading] = useState(false);
     const { user } = useUser();
 
-    const resetForm = () => {
-        setInput("")
-        setTextarea("")
-    }
+    const validationSchema = Yup.object({
+        title: Yup.string()
+            .required('Title is required'),
+        content: Yup.string()
+            .required('Content is required'),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            title: post?.title ?? "",
+            content: post?.content ?? "",
+        },
+        validationSchema,
+        validateOnBlur: false,
+        validateOnChange: false,
+        onSubmit: async (values) => {
+            setLoading(true);
+
+            try {
+                if (!user) throw new Error("User error");
+    
+                const newPost = {
+                    title: values.title,
+                    content: values.content,
+                    private: false,
+                    author: user.id,
+                };
+    
+                const res = await fetch("http://localhost:3000/api/posts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${user.token}`,
+                    },
+                    body: JSON.stringify(newPost),
+                });
+    
+                if (!res.ok) throw new Error("Erreur lors de l’ajout du post");
+    
+                // formik.handleReset(initialValues);
+                onClose();
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+    })
 
     const close = () => {
-        resetForm();
+        // formik.handleReset(initialValues);
         onClose();
     }
-
-    const save = async () => {
-        setLoading(true);
-
-        try {
-            if (!user) throw new Error("User error");
-
-            const newPost = {
-                title: input,
-                content: textarea,
-                private: false,
-                author: user.id,
-            };
-
-            const res = await fetch("http://localhost:3000/api/posts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${user.token}`,
-                },
-                body: JSON.stringify(newPost),
-            });
-
-            if (!res.ok) throw new Error("Erreur lors de l’ajout du post");
-
-            resetForm();
-            onClose();
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <div className={style.root}>
@@ -76,19 +87,21 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                                     label="Title"
                                     type="text"
                                     placeholder="Title name"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
+                                    value={formik.values.title}
+                                    onChange={formik.handleChange}
                                 />
+                                {formik.errors.title && <p>{formik.errors.title}</p>}
                                 <Textarea
                                     id="content"
                                     label="Content"
                                     placeholder="Content"
-                                    value={textarea}
-                                    onChange={(e) => setTextarea(e.target.value)}
+                                    value={formik.values.content}
+                                    onChange={formik.handleChange}
                                 />
+                                {formik.errors.content && <p>{formik.errors.content}</p>}
                                 <div className={style.modalCta}>
                                     <Button type="button" variant="buttonBlack" action={close} size="m">Cancel</Button>
-                                    <Button type="button" variant="button" action={save} size="m">Save</Button>
+                                    <Button type="button" variant="button" action={formik.handleSubmit} size="m">Save</Button>
                                 </div>
                             </>
                     :
