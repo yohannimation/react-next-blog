@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 import style from "./FormRegister.module.scss";
 
@@ -7,44 +9,51 @@ import Button from "../Button/Button";
 import Loader from "../Loader/Loader";
 
 export default function FormRegister() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const triggerRegister = async () => {
-        if (password !== confirmPassword) {
-            console.log("Password and confirm password do not match");
-            return;
-        }
+    const validationSchema = Yup.object({
+        username: Yup.string()
+            .required('Username is required'),
+        password: Yup.string()
+            .required('Password is required'),
+        confirmPassword: Yup.string()
+            .required('Confirm password is required')
+            .oneOf([Yup.ref("password")], "Passwords must match"),
+    });
 
-        setLoading(true);
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            confirmPassword: '',
+        }, 
+        validationSchema,
+        validateOnBlur: false,
+        validateOnChange: false,
+        onSubmit: async (values) => {
+            setLoading(true);
 
-        try {
-            const res = await fetch("http://localhost:3000/api/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
+            try {
+                const res = await fetch("http://localhost:3000/api/users", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(values),
+                });
 
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || "Failed to register");
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.error || "Failed to register");
+                }
+            } catch (err: any) {
+                console.error(err);
+            } finally {
+                setLoading(false);
             }
-
-            // Utilisateur créé avec succès
-            setUsername("");
-            setPassword("");
-            setConfirmPassword("");
-        } catch (err: any) {
-            console.error(err);
-        } finally {
-            setLoading(false);
         }
-    };
+    })
 
     return (
-        <form className={style.form}>
+        <form onSubmit={formik.handleSubmit} className={style.form}>
             {
                 loading ?
                     <Loader />
@@ -55,26 +64,29 @@ export default function FormRegister() {
                             label="Username"
                             type="text"
                             placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={formik.values.username}
+                            onChange={formik.handleChange}
                         />
+                        {formik.errors.username && <p>{formik.errors.username}</p>}
                         <Input
                             id="password"
                             label="Password"
                             type="password"
                             placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
                         />
+                        {formik.errors.password && <p>{formik.errors.password}</p>}
                         <Input
                             id="confirmPassword"
                             label="Confirm password"
                             type="password"
                             placeholder="ConfirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            value={formik.values.confirmPassword}
+                            onChange={formik.handleChange}
                         />
-                        <Button type="button" variant="button" action={triggerRegister} size="s">Register</Button>
+                        {formik.errors.confirmPassword && <p>{formik.errors.confirmPassword}</p>}
+                        <Button type="button" variant="button" size="s" action={formik.handleSubmit}>Register</Button>
                     </>
             }
         </form>
