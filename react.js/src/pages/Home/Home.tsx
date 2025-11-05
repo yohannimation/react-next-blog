@@ -24,11 +24,11 @@ export default function Home() {
         const fetchPosts = async () => {
             setLoading(true);
 
+            let url = "https://blog-app.yohannimation.fr/api/posts";
+
             try {
                 const searchValue = searchParams.get("search");
-                const url = searchValue
-                    ? `http://localhost:3000/api/posts?search=${encodeURIComponent(searchValue)}`
-                    : "http://localhost:3000/api/posts";
+                url = searchValue ? `${url}?search=${encodeURIComponent(searchValue)}` : url;
 
                 const res = await fetch(url, {
                     headers: user

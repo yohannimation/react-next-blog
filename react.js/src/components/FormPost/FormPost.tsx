@@ -48,7 +48,7 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                     author: user.id,
                 };
     
-                const res = await fetch("http://localhost:3000/api/posts", {
+                const res = await fetch("https://blog-app.yohannimation.fr/api/posts", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
