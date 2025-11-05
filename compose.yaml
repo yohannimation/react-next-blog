@@ -1,12 +1,11 @@
 services:
-
   next:
     build:
       context: ./next.js
       dockerfile: Dockerfile
     container_name: blog_backend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./next.js:/app
       - /app/node_modules
@@ -18,8 +17,8 @@ services:
       context: ./react.js
       dockerfile: Dockerfile
     container_name: blog_frontend
-    ports:
-      - "5173:5173"
+    expose:
+      - "5173"
     volumes:
       - ./react.js:/app
       - /app/node_modules
@@ -33,8 +32,8 @@ services:
     depends_on:
       - react
       - next
-    ports:
-      - "8081:80"
+    expose:
+      - "80"
     networks:
       - nginx-proxy-manager-stack_default
       - blog-network
