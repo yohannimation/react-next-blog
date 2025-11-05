@@ -12,6 +12,7 @@ import Textarea from "../Textarea/Textarea";
 import Loader from "../Loader/Loader";
 
 import { useUser } from "../../context/UserContext";
+import Checkbox from "../Checkbox/Checkbox";
 
 export default function FormPost({ post, onClose }: PostFormModalInterface) {
     const [loading, setLoading] = useState(false);
@@ -22,12 +23,14 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
             .required('Title is required'),
         content: Yup.string()
             .required('Content is required'),
+        private: Yup.boolean()
     });
 
     const formik = useFormik({
         initialValues: {
             title: post?.title ?? "",
             content: post?.content ?? "",
+            private: false,
         },
         validationSchema,
         validateOnBlur: false,
@@ -41,7 +44,7 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                 const newPost = {
                     title: values.title,
                     content: values.content,
-                    private: false,
+                    private: values.private,
                     author: user.id,
                 };
     
@@ -99,6 +102,12 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                                     onChange={formik.handleChange}
                                 />
                                 {formik.errors.content && <p>{formik.errors.content}</p>}
+                                <Checkbox
+                                    id="private"
+                                    label="Private"
+                                    checked={formik.values.private}
+                                    onChange={formik.handleChange}
+                                />
                             </>
                     :
                     <h2>To add a post, you must be connected</h2>
