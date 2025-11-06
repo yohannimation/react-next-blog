@@ -15,6 +15,8 @@ import { useUser } from "../../context/UserContext";
 import Checkbox from "../Checkbox/Checkbox";
 
 export default function FormPost({ post, onClose }: PostFormModalInterface) {
+    const VITE_BACK_URL = import.meta.env.VITE_BACK_URL;
+    
     const [loading, setLoading] = useState(false);
     const { user } = useUser();
 
@@ -48,7 +50,7 @@ export default function FormPost({ post, onClose }: PostFormModalInterface) {
                     author: user.id,
                 };
     
-                const res = await fetch("https://blog-app.yohannimation.fr/api/posts", {
+                const res = await fetch(`${VITE_BACK_URL}/api/posts`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

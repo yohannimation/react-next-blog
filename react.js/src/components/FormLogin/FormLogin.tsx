@@ -11,6 +11,8 @@ import Loader from "../Loader/Loader";
 import { useUser } from "../../context/UserContext";
 
 export default function FormLogin() {
+    const VITE_BACK_URL = import.meta.env.VITE_BACK_URL;
+
     const [loading, setLoading] = useState(false)
     const { login } = useUser();
     
@@ -33,7 +35,7 @@ export default function FormLogin() {
             setLoading(true);
 
             try {
-                const res = await fetch("https://blog-app.yohannimation.fr/api/users/login", {
+                const res = await fetch(`${VITE_BACK_URL}/api/users/login`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(values),

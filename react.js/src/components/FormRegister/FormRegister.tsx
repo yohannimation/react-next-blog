@@ -9,6 +9,8 @@ import Button from "../Button/Button";
 import Loader from "../Loader/Loader";
 
 export default function FormRegister() {
+    const VITE_BACK_URL = import.meta.env.VITE_BACK_URL;
+    
     const [loading, setLoading] = useState(false)
 
     const validationSchema = Yup.object({
@@ -34,7 +36,7 @@ export default function FormRegister() {
             setLoading(true);
 
             try {
-                const res = await fetch("https://blog-app.yohannimation.fr/api/users", {
+                const res = await fetch(`${VITE_BACK_URL}/api/users`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(values),

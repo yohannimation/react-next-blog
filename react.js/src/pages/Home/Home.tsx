@@ -13,6 +13,8 @@ import Button from "../../components/Button/Button";
 import Loader from "../../components/Loader/Loader";
 
 export default function Home() {
+    const VITE_BACK_URL = import.meta.env.VITE_BACK_URL;
+    
     const { user } = useUser();
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +26,9 @@ export default function Home() {
         const fetchPosts = async () => {
             setLoading(true);
 
-            let url = "https://blog-app.yohannimation.fr/api/posts";
+            console.log(VITE_BACK_URL)
+
+            let url = `${VITE_BACK_URL}/api/posts`;
 
             try {
                 const searchValue = searchParams.get("search");
